@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { React, useState } from "react";
+import "./App.css";
+import BookSearch from "./components/BookSearch";
 
 function App() {
+  const [query, setQuery] = useState("");
+  const [pageNumber, setPageNumber] = useState(1);
+
+  const changeHandler = (e) => {
+    setQuery(e.target.value);
+    setPageNumber(1);
+  };
+
+  BookSearch(query, pageNumber);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input
+        type="text"
+        placeholder="Enter your query"
+        value={query}
+        onChange={changeHandler}
+      ></input>
+      <div>Title</div>
+      <div>Title</div>
+      <div>Title</div>
+      <div>Title</div>
+      <div>Loading...</div>
+      <div>Error</div>
     </div>
   );
 }
