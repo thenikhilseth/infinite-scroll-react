@@ -8,9 +8,16 @@ function BookSearch(query, pageNumber) {
   const [books, setBooks] = useState([]);
   const [hasMore, setHasMore] = useState(false);
 
+  //If query changes, delete the output of previous seach query and display results based on new query rather than appending the results.
   useEffect(() => {
-    setLoading(true);
+    setBooks([]);
+  }, [query]);
+
+  useEffect(() => {
+    setLoading(true); //Set loading to true
     setError(false);
+
+    /*** Abort controller Logic */
     //If controller already exists on changeHandle
     if (controllerRef.current) {
       controllerRef.current.abort();
@@ -18,6 +25,7 @@ function BookSearch(query, pageNumber) {
     controllerRef.current = new AbortController();
     const signal = controllerRef.current.signal;
 
+    /**Calling API Logic*****/
     axios({
       method: "GET",
       url: "https://openlibrary.org/search.json",
@@ -37,15 +45,15 @@ function BookSearch(query, pageNumber) {
             }),
           ];
         });
-        setHasMore(response.data.docs.length > 0);
-        setLoading(false);
+        setHasMore(response.data.docs.length > 0); //To check if we have more books to load.
+        setLoading(false); // Set Loading to false when the whole single page is completed.
       })
       .catch((e) => {
-        setError(true);
         if (axios.isCancel(e)) {
           //If the error is axios cancel error because of abort controller, don't display the error because we cancelled it intentionally
           return;
         }
+        setError(true);
         console.log("Data Fetching Error");
       });
   }, [query, pageNumber]);
