@@ -16,8 +16,6 @@ function App() {
   const { loading, error, books, hasMore } = BookSearch(query, pageNumber);
 
   //**********************The Main Logic of Infinite Scrolling*****************************************/
-  //*********** */
-
   const lastBookElementRef = useCallback(
     // Here the node referes to our last Book
     (node) => {
